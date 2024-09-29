@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15a84bb6b824cf4abdd939e415b60b4, type: 3}
+  m_Name: GameInstaller
+  m_EditorClassIdentifier: 
+  brickGridConfig: {fileID: 11400000, guid: 6d9dc3748a37b4a49afc84065718efc7, type: 2}
