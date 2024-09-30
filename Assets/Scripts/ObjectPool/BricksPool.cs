@@ -1,28 +1,33 @@
 ﻿using Configs;
 using Cysharp.Threading.Tasks;
+using Game;
 using Model;
+using SampleGame;
 using UnityEngine;
 using Zenject;
 
 namespace ObjectPool
 {
-    public sealed class BricksPool : MonoBehaviour
+    public sealed class BricksPool : MonoBehaviour, IGameTickable
     {
         [SerializeField] private bool autoExpand;
         [SerializeField] private BrickView brickPrefab;
-        private BrickGridConfig _brickGridConfig;
-
-        [Inject]
-        public void Construct(BrickGridConfig brickGridConfig) => _brickGridConfig = brickGridConfig;
-
         private readonly float _startPositionX = -9f;
         private readonly float _startPositionY = 8.6f;
         private readonly float _startPositionZ = 0f;
         private readonly float _offsetX = 4.5f;
         private readonly float _offsetY = -1.6f;
-
         private int _poolCount;
         private PoolMono<BrickView> _poolMono;
+        private BrickGridConfig _brickGridConfig;
+        private GameLauncher _gameLauncher;
+        
+        [Inject]
+        public void Construct(BrickGridConfig brickGridConfig,GameLauncher gameLauncher)
+        {
+            _brickGridConfig = brickGridConfig;
+            _gameLauncher = gameLauncher;
+        }
 
         private void Awake()
         {
@@ -60,5 +65,15 @@ namespace ObjectPool
             foreach (var brick in _poolMono.Pool) 
                 await brick.ShowBrick();
         }
+        void IGameTickable.Tick(float deltaTime) => CheckBricksRestart();
+        private void CheckBricksRestart()
+        {
+            foreach (var mono in _poolMono.Pool)
+                if (mono.gameObject.activeInHierarchy)
+                    return;
+    
+            _gameLauncher.ResetCurrentScene();
+        }
+
     }
 }
